@@ -22,7 +22,15 @@ import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
 import dagger.multibindings.StringKey
+import com.android.systemui.qs.tiles.SmartPixelsTile
 
 @Module
 interface VoltageModule {
+
+    /** Inject SmartPixelsTile into tileMap in QSModule */
+    @Binds
+    @IntoMap
+    @StringKey(SmartPixelsTile.TILE_SPEC)
+    fun bindSmartPixelsTile(smartPixelsTile: SmartPixelsTile): QSTileImpl<*>
+
 }

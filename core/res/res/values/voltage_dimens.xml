@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-     Copyright (C) 2023 VoltageOS
+     Copyright (C) 2024 VoltageOS
      SPDX-License-Identifier: Apache-2.0
 -->
 <resources>
-
     <!-- Pocket Mode -->
     <dimen name="pocket_view_img_height">350dp</dimen>
     <dimen name="pocket_view_img_width">175dp</dimen>
@@ -16,5 +15,4 @@
     <dimen name="pocket_view_cancel_margin_horizontal">24dp</dimen>
     <dimen name="pocket_view_top_tag_size">13sp</dimen>
     <dimen name="pocket_view_top_tag_margin_top">8dp</dimen>
-
 </resources>

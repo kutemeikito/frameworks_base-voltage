@@ -80,6 +80,10 @@ cc_defaults {
         "external/skia/src/core",
     ],
 
+    lto: {
+        thin: true,
+    },
+
     target: {
         android: {
             include_dirs: [

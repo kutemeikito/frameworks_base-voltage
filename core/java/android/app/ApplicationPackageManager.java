@@ -829,6 +829,11 @@ public class ApplicationPackageManager extends PackageManager {
             };
 
     private static final String[] pTensorCodenames = {
+            "comet",
+            "komodo",
+            "caiman",
+            "tokay",
+            "akita",
             "husky",
             "shiba",
             "felix",
@@ -904,7 +909,8 @@ public class ApplicationPackageManager extends PackageManager {
     public boolean hasSystemFeature(String name, int version) {
         String packageName = ActivityThread.currentPackageName();
         if (packageName != null
-                && packageName.equals("com.google.android.googlequicksearchbox")) {
+                && (packageName.equals("com.google.android.googlequicksearchbox")
+                || packageName.equals("com.google.android.apps.nexuslauncher"))) {
             if (Arrays.asList(featuresPixel).contains(name)) return true;
             if (Arrays.asList(featuresPixelOthers).contains(name)) return true;
             if (Arrays.asList(featuresTensor).contains(name)) return true;
@@ -912,7 +918,7 @@ public class ApplicationPackageManager extends PackageManager {
         }
         if (packageName != null
                 && packageName.equals("com.google.android.apps.photos")
-                && SystemProperties.getBoolean("persist.sys.pixelprops.gphotos", true)) {
+                && SystemProperties.getBoolean("persist.sys.gphooks.enable", false)) {
             if (Arrays.asList(featuresPixel).contains(name)) return false;
             if (Arrays.asList(featuresPixelOthers).contains(name)) return true;
             if (Arrays.asList(featuresTensor).contains(name)) return false;

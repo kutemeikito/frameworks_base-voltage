@@ -196,7 +196,7 @@ public class AndroidKeyStoreSpi extends KeyStoreSpi {
 
     @Override
     public Certificate[] engineGetCertificateChain(String alias) {
-        if (SystemProperties.getBoolean("persist.sys.pif", true)) {
+        if (SystemProperties.getBoolean("persist.sys.pihooks.enable", true)) {
             PixelPropsUtils.onEngineGetCertificateChain();
         }
 

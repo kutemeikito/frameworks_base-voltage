@@ -53,15 +53,9 @@ public class GamesPropsUtils {
     private static final Map<String, Object> propsToChangeOP8P = createMap("IN2020", "OnePlus");
     private static final String[] packagesToChangeOP8P = { // spoof as OnePlus 8 PRO
             "com.netease.lztgglobal",
-            "com.pubg.imobile",
-            "com.pubg.krmobile",
-            "com.rekoo.pubgm",
             "com.riotgames.league.wildrift",
             "com.riotgames.league.wildrifttw",
-            "com.riotgames.league.wildriftvn",
-            "com.tencent.ig",
-            "com.tencent.tmgp.pubgmhd",
-            "com.vng.pubgmobile"
+            "com.riotgames.league.wildriftvn"
     };
 
     private static final Map<String, Object> propsToChangeOP9P = createMap("LE2101", "OnePlus");
@@ -88,6 +82,16 @@ public class GamesPropsUtils {
             "com.pearlabyss.blackdesertm.gl"
     };
 
+    private static final Map<String, Object> propsToChangeROG8P = createMap("ASUS_AI2401_A", "asus");
+    private static final String[] packagesToChangeROG8P = { // spoof as ROG Phone 8 Pro
+            "com.pubg.imobile",
+            "com.pubg.krmobile",
+            "com.rekoo.pubgm",
+            "com.tencent.ig",
+            "com.tencent.tmgp.pubgmhd",
+            "com.vng.pubgmobile"
+    };
+
     private static final Map<String, Object> propsToChangeXP5 = createMap("SO-52A", "Sony");
     private static final String[] packagesToChangeXP5 = { // spoof as Xperia 5
             "com.garena.game.codm",
@@ -109,7 +113,7 @@ public class GamesPropsUtils {
             return;
         }
         Map<String, Object> propsToChange = null;
-        if (!SystemProperties.getBoolean("persist.sys.pixelprops.games", false)) {
+        if (!SystemProperties.getBoolean("persist.sys.gamehooks.enable", false)) {
             return;
         } else {
             if (Arrays.asList(packagesToChangeBS4).contains(packageName)) {
@@ -126,6 +130,8 @@ public class GamesPropsUtils {
                 propsToChange = propsToChangeF5;
             } else if (Arrays.asList(packagesToChangeROG6).contains(packageName)) {
                 propsToChange = propsToChangeROG6;
+            } else if (Arrays.asList(packagesToChangeROG8P).contains(packageName)) {
+                propsToChange = propsToChangeROG8P;
             } else if (Arrays.asList(packagesToChangeXP5).contains(packageName)) {
                 propsToChange = propsToChangeXP5;
             }

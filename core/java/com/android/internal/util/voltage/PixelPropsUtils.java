@@ -56,12 +56,12 @@ public class PixelPropsUtils {
     private static final String PROCESS_GMS_UNSTABLE = PACKAGE_GMS + ".unstable";
     private static final String PACKAGE_GOOGLE = "com.google";
     private static final String PACKAGE_SI = "com.google.android.settings.intelligence";
-    private static final String SPOOF_PIF = "persist.sys.pif";
-    private static final String SPOOF_PIXEL_PROPS = "persist.sys.pixelprops";
+    private static final String SPOOF_PI = "persist.sys.pihooks.enable";
+    private static final String SPOOF_PIXEL_PROPS = "persist.sys.pphooks.enable";
 
     private static final String TAG = PixelPropsUtils.class.getSimpleName();
     private static final String DEVICE = "ro.voltage.device";
-    private static final boolean DEBUG = SystemProperties.getBoolean("persist.sys.pixelprops.debug", false);
+    private static final boolean DEBUG = SystemProperties.getBoolean("persist.sys.pihooks.debug", false);
 
     private static final String sDeviceModel =
             SystemProperties.get("ro.product.model", Build.MODEL);
@@ -83,10 +83,14 @@ public class PixelPropsUtils {
             "com.google.android.apps.customization.pixel",
             "com.google.android.apps.emojiwallpaper",
             "com.google.android.apps.nexuslauncher",
+            "com.google.android.apps.pixel.agent",
+            "com.google.android.apps.pixel.creativeassistant",
+            "com.google.android.apps.pixel.support",
             "com.google.android.apps.privacy.wildlife",
             "com.google.android.apps.subscriptions.red",
             "com.google.android.apps.wallpaper",
             "com.google.android.apps.wallpaper.pixel",
+            "com.google.android.apps.weather",
             "com.google.android.gms",
             "com.google.android.googlequicksearchbox",
             "com.google.android.wallpaper.effects",
@@ -140,6 +144,11 @@ public class PixelPropsUtils {
 
     // Codenames for currently supported Pixels by Google
     private static final String[] pixelCodenames = {
+            "comet",
+            "komodo",
+            "caiman",
+            "tokay",
+            "akita",
             "husky",
             "shiba",
             "felix",
@@ -168,12 +177,12 @@ public class PixelPropsUtils {
         propsToChangeRecentPixel = new HashMap<>();
         propsToChangeRecentPixel.put("BRAND", "google");
         propsToChangeRecentPixel.put("MANUFACTURER", "Google");
-        propsToChangeRecentPixel.put("DEVICE", "husky");
-        propsToChangeRecentPixel.put("PRODUCT", "husky");
-        propsToChangeRecentPixel.put("HARDWARE", "husky");
-        propsToChangeRecentPixel.put("MODEL", "Pixel 8 Pro");
-        propsToChangeRecentPixel.put("ID", "AP2A.240805.005");
-        propsToChangeRecentPixel.put("FINGERPRINT", "google/husky/husky:14/AP2A.240805.005/12025142:user/release-keys");
+        propsToChangeRecentPixel.put("DEVICE", "caiman");
+        propsToChangeRecentPixel.put("PRODUCT", "caiman");
+        propsToChangeRecentPixel.put("HARDWARE", "caiman");
+        propsToChangeRecentPixel.put("MODEL", "Pixel 9 Pro");
+        propsToChangeRecentPixel.put("ID", "AD1A.240530.047.U1");
+        propsToChangeRecentPixel.put("FINGERPRINT", "google/caiman/caiman:14/AD1A.240530.047.U1/12150698:user/release-keys");
         propsToChangePixelTablet = new HashMap<>();
         propsToChangePixelTablet.put("BRAND", "google");
         propsToChangePixelTablet.put("MANUFACTURER", "Google");
@@ -251,6 +260,9 @@ public class PixelPropsUtils {
     }
 
     public static void spoofBuildGms(Context context) {
+        if (!SystemProperties.getBoolean(SPOOF_PI, true))
+            return;
+
         String packageName = "com.goolag.pif";
 
         if (!VoltageUtils.isPackageInstalled(context, packageName)) {
@@ -318,11 +330,11 @@ public class PixelPropsUtils {
         }
         if (sIsGms) {
             if (shouldTryToCertifyDevice()) {
-                if (!SystemProperties.getBoolean(SPOOF_PIF, true)) {
-                    dlog("PIF is disabled by system prop");
+                if (!SystemProperties.getBoolean(SPOOF_PI, true)) {
+                    dlog("Prebuilt PIF is disabled by system prop");
                     return;
                 } else {
-                    dlog("Spoofing GMS to pass integrity");
+                    dlog("Spoofing GMS to pass PI");
                     spoofBuildGms(context);
                 }
             }
@@ -341,12 +353,8 @@ public class PixelPropsUtils {
             } else if (Arrays.asList(packagesToChangeRecentPixel).contains(packageName)) {
                 if (packageName.toLowerCase().contains("com.google.android.gms")) {
                     setPropValue("TIME", System.currentTimeMillis());
-                    if (processName.toLowerCase().contains("gapps")
-                            || processName.toLowerCase().contains("gservice")
-                            || processName.toLowerCase().contains("learning")
-                            || processName.toLowerCase().contains("persistent")
-                            || processName.toLowerCase().contains("search")
-                            || processName.toLowerCase().contains("update")) {
+                    if (processName.toLowerCase().contains("learning")
+                            || processName.toLowerCase().contains("persistent")) {
                         propsToChange.putAll(propsToChangePixel5a);
                     }
                 }
@@ -464,6 +472,7 @@ public class PixelPropsUtils {
             gmsUid = context.getPackageManager().getApplicationInfo("com.google.android.gms", 0).uid;
             dlog("shouldBypassTaskPermission: gmsUid:" + gmsUid + " callingUid:" + callingUid);
         } catch (Exception e) {
+            //Log.e(TAG, "shouldBypassTaskPermission: unable to get gms uid", e);
             return false;
         }
         return gmsUid == callingUid;
@@ -476,6 +485,8 @@ public class PixelPropsUtils {
     }
 
     public static void onEngineGetCertificateChain() {
+        if (!SystemProperties.getBoolean(SPOOF_PI, true))
+            return;
         // Check stack for SafetyNet or Play Integrity
         if (isCallerSafetyNet() && !sIsExcluded) {
             dlog("Blocked key attestation");

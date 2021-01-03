@@ -13678,6 +13678,12 @@ public final class Settings {
         public static final String SYSTEM_CUSTOM_THEME = "system_custom_theme";
 
         /**
+         * Whether key swap is enabled on supported hardware
+         * @hide
+         */
+        public static final String SWAP_CAPACITIVE_KEYS = "swap_capacitive_keys";
+
+        /**
          * These entries are considered common between the personal and the managed profile,
          * since the managed profile doesn't get to change them.
          */

@@ -6692,6 +6692,12 @@ public final class Settings {
         public static final String ISLAND_NOTIFICATION_NOW_PLAYING = "island_notification_now_playing";
 
         /**
+         * Whether auto brightness is applied one shot when screen is turned on
+         * @hide
+         */
+        public static final String AUTO_BRIGHTNESS_ONE_SHOT = "auto_brightness_one_shot";
+
+        /**
          * Override max volume for {@link android.media.AudioSystem.STREAM_VOICE_CALL}
          * see {@link com.android.server.audio.AudioService} for defaults in priority
          * -1 = disabled
@@ -7225,6 +7231,7 @@ public final class Settings {
             PRIVATE_SETTINGS.add(NAV_BAR_COMPACT_LAYOUT);
             PRIVATE_SETTINGS.add(NAVIGATION_BAR_IME_SPACE);
             PRIVATE_SETTINGS.add(FORCE_FULLSCREEN_CUTOUT_APPS);
+            PRIVATE_SETTINGS.add(AUTO_BRIGHTNESS_ONE_SHOT);
         }
 
         /**

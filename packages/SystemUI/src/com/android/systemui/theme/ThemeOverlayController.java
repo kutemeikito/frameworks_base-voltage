@@ -128,6 +128,8 @@ public class ThemeOverlayController implements CoreStartable, Dumpable {
     protected static final String TAG = "ThemeOverlayController";
     private static final boolean DEBUG = false;
 
+    protected static String SYSTEM_BLACK_THEME = "system_black_theme";
+
     private final ThemeOverlayApplier mThemeManager;
     private final UserManager mUserManager;
     private final BroadcastDispatcher mBroadcastDispatcher;
@@ -841,6 +843,10 @@ public class ThemeOverlayController implements CoreStartable, Dumpable {
 
         FabricatedOverlay[] fOverlays = null;
 
+        boolean isBlackTheme = mSecureSettings.getInt(SYSTEM_BLACK_THEME, 0) == 1;
+
+        mThemeManager.setIsBlackTheme(isBlackTheme);
+
         if (mNeedsOverlayCreation) {
             mNeedsOverlayCreation = false;
             fOverlays = new FabricatedOverlay[]{
@@ -851,6 +857,7 @@ public class ThemeOverlayController implements CoreStartable, Dumpable {
         mThemeManager.applyCurrentUserOverlays(categoryToPackage, fOverlays, currentUser,
                 managedProfiles, onCompleteCallback);
 
+        mThemeManager.applyBlackTheme(isBlackTheme);
     }
 
     private Style fetchThemeStyleFromSetting() {

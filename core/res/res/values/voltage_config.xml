@@ -116,4 +116,7 @@
     <!-- Display color inversion availability -->
     <bool name="config_displayInversionAvailable">true</bool>
 
+  <!-- Parallel space max count. Should overlay according to device performance. -->
+  <integer name="config_parallelSpaceMaxCount">9</integer>
+
 </resources>

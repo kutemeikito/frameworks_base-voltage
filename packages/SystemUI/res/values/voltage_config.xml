@@ -86,4 +86,7 @@
          This is used to prevent flickers due to the dimming being disabled
          before the screen has had chance to switch out of HBM mode -->
     <integer name="config_udfpsDimmingDisableDelay">0</integer>
+
+    <!-- Udfps vendor code -->
+    <integer name="config_udfpsVendorCode">0</integer>
 </resources>

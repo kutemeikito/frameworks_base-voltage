@@ -36,6 +36,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.RemoteException;
 import android.os.UserManager;
+import android.os.UserHandle;
 import android.provider.Settings;
 import android.provider.Settings.Global;
 import android.service.notification.ZenModeConfig;
@@ -113,6 +114,8 @@ public class PhoneStatusBarPolicy
 
     private static final String BLUETOOTH_SHOW_BATTERY =
             "system:" + Settings.System.BLUETOOTH_SHOW_BATTERY;
+    private static final String NETWORK_TRAFFIC_LOCATION =
+            "system:" + Settings.System.NETWORK_TRAFFIC_LOCATION;
 
     static final int LOCATION_STATUS_ICON_ID = PrivacyType.TYPE_LOCATION.getIconId();
 
@@ -135,6 +138,7 @@ public class PhoneStatusBarPolicy
     private final String mSlotScreenRecord;
     private final String mSlotConnectedDisplay;
     private final String mSlotNfc;
+    private final String mSlotNetworkTraffic;
     private final int mDisplayId;
     private final SharedPreferences mSharedPreferences;
     private final DateFormatUtil mDateFormatUtil;
@@ -184,6 +188,8 @@ public class PhoneStatusBarPolicy
 
     private boolean mShowBluetoothBattery;
     private boolean mHideBluetooth;
+
+    private boolean mShowNetworkTraffic;
 
     @Inject
     public PhoneStatusBarPolicy(Context context, StatusBarIconController iconController,
@@ -262,6 +268,7 @@ public class PhoneStatusBarPolicy
         mSlotScreenRecord = resources.getString(
                 com.android.internal.R.string.status_bar_screen_record);
         mSlotNfc = resources.getString(com.android.internal.R.string.status_bar_nfc);
+        mSlotNetworkTraffic = resources.getString(com.android.internal.R.string.status_bar_network_traffic);
         mCurrentUserSetup = mProvisionedController.isDeviceProvisioned();
 
         mDisplayId = displayId;
@@ -270,6 +277,7 @@ public class PhoneStatusBarPolicy
 
         Dependency.get(TunerService.class).addTunable(this,
                 BLUETOOTH_SHOW_BATTERY,
+                NETWORK_TRAFFIC_LOCATION,
                 StatusBarIconController.ICON_HIDE_LIST);
     }
 
@@ -378,6 +386,11 @@ public class PhoneStatusBarPolicy
         mIconController.setIconVisibility(mSlotNfc, false);
         updateNfc();
 
+        // network traffic
+        mShowNetworkTraffic = Settings.System.getIntForUser(mContext.getContentResolver(),
+            NETWORK_TRAFFIC_LOCATION, 0, UserHandle.USER_CURRENT) == 1;
+        updateNetworkTraffic();
+
         mRotationLockController.addCallback(this);
         mBluetooth.addCallback(this);
         mProvisionedController.addCallback(this);
@@ -424,6 +437,11 @@ public class PhoneStatusBarPolicy
                 mShowBluetoothBattery =
                         TunerService.parseIntegerSwitch(newValue, true);
                 updateBluetooth();
+                break;
+            case NETWORK_TRAFFIC_LOCATION:
+                mShowNetworkTraffic =
+                        TunerService.parseInteger(newValue, 0) == 1;
+                updateNetworkTraffic();
                 break;
             case StatusBarIconController.ICON_HIDE_LIST:
                 ArraySet<String> hideList = StatusBarIconController.getIconHideList(mContext, newValue);
@@ -559,6 +577,11 @@ public class PhoneStatusBarPolicy
 
         mIconController.setBluetoothIcon(mSlotBluetooth,
                 new BluetoothIconState(!mHideBluetooth && bluetoothVisible, batteryLevel, contentDescription));
+    }
+
+    private final void updateNetworkTraffic() {
+        mIconController.setNetworkTraffic(mSlotNetworkTraffic, new NetworkTrafficState(mShowNetworkTraffic));
+        mIconController.setIconVisibility(mSlotNetworkTraffic, mShowNetworkTraffic);
     }
 
     private final void updateTTY() {
@@ -929,6 +952,19 @@ public class PhoneStatusBarPolicy
         @Override
         public String toString() {
             return "BluetoothIconState(visible=" + visible + " batteryLevel=" + batteryLevel + ")";
+        }
+    }
+
+    public static class NetworkTrafficState {
+        public boolean visible;
+
+        public NetworkTrafficState(boolean visible) {
+            this.visible = visible;
+        }
+
+        @Override
+        public String toString() {
+            return "NetworkTrafficState(visible=" + visible + ")";
         }
     }
 }

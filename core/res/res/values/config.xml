@@ -6985,4 +6985,6 @@
 
     <!-- The key containing the branching boolean for legacy Search. -->
     <string name="config_defaultContextualSearchLegacyEnabled" translatable="false" />
+
+    <string name="config_gnssPsdsType"></string>
 </resources>

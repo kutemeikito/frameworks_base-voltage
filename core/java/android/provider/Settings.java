@@ -7278,6 +7278,12 @@ public final class Settings {
         @Readable
         public static final String QS_BT_AUTO_ON = "qs_bt_auto_on";
 
+	/**
+         * Whether to enable smart 5G mode
+         * @hide
+         */
+        public static final String SMART_5G = "smart_5g";
+
         /**
          * These are all public system settings
          *

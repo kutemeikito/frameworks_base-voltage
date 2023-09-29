@@ -24,6 +24,8 @@ import static android.ext.settings.GnssConstants.SUPL_SERVER_GRAPHENEOS_PROXY;
 import static android.ext.settings.GnssConstants.SUPL_SERVER_STANDARD;
 import static android.ext.settings.RemoteKeyProvisioningSettings.GRAPHENEOS_PROXY;
 import static android.ext.settings.RemoteKeyProvisioningSettings.STANDARD_SERVER;
+import static android.ext.settings.WidevineProvisioningSettings.WV_GRAPHENEOS_PROXY;
+import static android.ext.settings.WidevineProvisioningSettings.WV_STANDARD_SERVER;
 
 /** @hide */
 public class ExtSettings {
@@ -118,6 +120,12 @@ public class ExtSettings {
             }
         }
     };
+
+    public static final IntSetting WIDEVINE_PROVISIONING_SERVER = new IntSetting(
+            Setting.Scope.GLOBAL, "widevine_provisioner_server",
+            WV_GRAPHENEOS_PROXY, // default
+            WV_STANDARD_SERVER, WV_GRAPHENEOS_PROXY // valid values
+    );
 
     private ExtSettings() {}
 

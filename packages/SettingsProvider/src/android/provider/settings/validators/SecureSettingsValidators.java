@@ -425,5 +425,7 @@ public class SecureSettingsValidators {
         VALIDATORS.put(Secure.TETHERING_ALLOW_VPN_UPSTREAMS, BOOLEAN_VALIDATOR);
         VALIDATORS.put(Secure.TORCH_DOUBLE_TAP_POWER_GESTURE_ENABLED, BOOLEAN_VALIDATOR);
         VALIDATORS.put(Secure.TORCH_LONG_PRESS_POWER, BOOLEAN_VALIDATOR);
+        VALIDATORS.put(Secure.VPN_ENFORCE_DNS, BOOLEAN_VALIDATOR);
+        VALIDATORS.put(Secure.VPN_ENFORCE_DNS_STORE, new DiscreteValueValidator(new String[] {"-1", "0", "1", "2"}));
     }
 }

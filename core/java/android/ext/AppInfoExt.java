@@ -9,21 +9,17 @@ import android.os.Parcelable;
 @SystemApi
 public final class AppInfoExt implements Parcelable {
     /** @hide */
-    public static final AppInfoExt DEFAULT = new AppInfoExt(PackageId.UNKNOWN, 0, 0L);
+    public static final AppInfoExt DEFAULT = new AppInfoExt(PackageId.UNKNOWN, 0);
 
     private final int packageId;
     private final int flags;
 
     /** @hide */
-    public static final long HAS_COMPAT_CHANGES = 1L << 63;
-    private final long compatChanges;
-
     public static final int FLAG_HAS_GMSCORE_CLIENT_LIBRARY = 0;
 
-    public AppInfoExt(int packageId, int flags, long compatChanges) {
+    public AppInfoExt(int packageId, int flags) {
         this.packageId = packageId;
         this.flags = flags;
-        this.compatChanges = compatChanges;
     }
 
     /**
@@ -35,15 +31,6 @@ public final class AppInfoExt implements Parcelable {
 
     public boolean hasFlag(int flag) {
         return (flags & (1 << flag)) != 0;
-    }
-
-    public boolean hasCompatConfig() {
-        return (compatChanges & HAS_COMPAT_CHANGES) != 0;
-    }
-
-    public boolean hasCompatChange(int flag) {
-        long mask = (1L << flag) | HAS_COMPAT_CHANGES;
-        return (compatChanges & mask) == mask;
     }
 
     @Override
@@ -61,7 +48,6 @@ public final class AppInfoExt implements Parcelable {
 
         dest.writeInt(packageId);
         dest.writeInt(flags);
-        dest.writeLong(compatChanges);
     }
 
     @NonNull
@@ -71,7 +57,7 @@ public final class AppInfoExt implements Parcelable {
             if (p.readBoolean()) {
                 return DEFAULT;
             }
-            return new AppInfoExt(p.readInt(), p.readInt(), p.readLong());
+            return new AppInfoExt(p.readInt(), p.readInt());
         }
 
         @Override

@@ -1904,6 +1904,7 @@ class ContextImpl extends Context {
         if (mPackageInfo != null) {
             IIntentReceiver rd = mPackageInfo.forgetReceiverDispatcher(
                     getOuterContext(), receiver);
+            if (rd == null) return;
             try {
                 ActivityManager.getService().unregisterReceiver(rd);
             } catch (RemoteException e) {
@@ -2214,11 +2215,12 @@ class ContextImpl extends Context {
     @Override
     public void unbindService(ServiceConnection conn) {
         if (conn == null) {
-            throw new IllegalArgumentException("connection is null");
+            return;
         }
         if (mPackageInfo != null) {
             IServiceConnection sd = mPackageInfo.forgetServiceDispatcher(
                     getOuterContext(), conn);
+            if (sd == null) return;
             try {
                 ActivityManager.getService().unbindService(sd);
             } catch (RemoteException e) {

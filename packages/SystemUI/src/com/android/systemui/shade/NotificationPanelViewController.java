@@ -4691,7 +4691,7 @@ public final class NotificationPanelViewController implements ShadeSurface, Dump
                 mDoubleTapToSleepEnabled = TunerService.parseIntegerSwitch(newValue, true);
             } else if (ISLAND_NOTIFICATION.equals(key) || HEADS_UP_NOTIFICATIONS_ENABLED.equals(key)) {
                 mUseHeadsUp = TunerService.parseIntegerSwitch(newValue, true);
-                mUseIslandNotification = TunerService.parseIntegerSwitch(newValue, true);
+                mUseIslandNotification = TunerService.parseIntegerSwitch(newValue, false);
                 mNotifIsland.setIslandEnabled(mUseIslandNotification && mUseHeadsUp);
             }
         }

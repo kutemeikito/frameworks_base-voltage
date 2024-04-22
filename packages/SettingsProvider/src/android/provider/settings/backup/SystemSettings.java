@@ -116,7 +116,9 @@ public class SystemSettings {
                 Settings.System.NOTIFICATION_COOLDOWN_ALL,
                 Settings.System.NOTIFICATION_COOLDOWN_VIBRATE_UNLOCKED,
                 Settings.System.LOCKSCREEN_ROTATION,
-                Settings.System.NAVIGATION_BAR_IME_SPACE
+                Settings.System.NAVIGATION_BAR_IME_SPACE,
+	        Settings.System.QS_WIFI_AUTO_ON,
+	        Settings.System.QS_BT_AUTO_ON
         ));
         if (Flags.backUpSmoothDisplayAndForcePeakRefreshRate()) {
             settings.add(Settings.System.PEAK_REFRESH_RATE);

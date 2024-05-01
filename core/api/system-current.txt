@@ -4028,6 +4028,8 @@ package android.content.pm {
     method public boolean isOem();
     method @RequiresPermission(android.Manifest.permission.INSTALL_PACKAGES) public boolean isPrivilegedApp();
     method public boolean isProduct();
+    method public boolean isSystemApp();
+    method public boolean isUpdatedSystemApp();
     method public boolean isVendor();
     field public String credentialProtectedDataDir;
     field public int targetSandboxVersion;

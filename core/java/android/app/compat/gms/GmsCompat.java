@@ -123,6 +123,9 @@ public final class GmsCompat {
             }
         }
 
+	if (app.isSystemApp() || app.isUpdatedSystemApp())
+		return false;
+
         return isEnabledFor(app.ext().getPackageId(), app.isPrivilegedApp());
     }
 

@@ -2017,6 +2017,10 @@ UnflaggedApi: android.content.pm.AppPermissionUtils#shouldSpoofPermissionRequest
     New API must be flagged with @FlaggedApi: method android.content.pm.AppPermissionUtils.shouldSpoofPermissionRequestResult(android.content.pm.GosPackageState,String)
 UnflaggedApi: android.content.pm.ApplicationInfo#ext():
     New API must be flagged with @FlaggedApi: method android.content.pm.ApplicationInfo.ext()
+UnflaggedApi: android.content.pm.ApplicationInfo#isSystemApp():
+    New API must be flagged with @FlaggedApi: method android.content.pm.ApplicationInfo.isSystemApp()
+UnflaggedApi: android.content.pm.ApplicationInfo#isUpdatedSystemApp():
+    New API must be flagged with @FlaggedApi: method android.content.pm.ApplicationInfo.isUpdatedSystemApp()
 UnflaggedApi: android.content.pm.GosPackageState:
     New API must be flagged with @FlaggedApi: class android.content.pm.GosPackageState
 UnflaggedApi: android.content.pm.GosPackageState#CREATOR:

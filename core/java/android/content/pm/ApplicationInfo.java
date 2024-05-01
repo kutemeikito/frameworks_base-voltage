@@ -2582,11 +2582,13 @@ public class ApplicationInfo extends PackageItemInfo implements Parcelable {
 
     /** @hide */
     @TestApi
+    @SystemApi
     public boolean isSystemApp() {
         return (flags & ApplicationInfo.FLAG_SYSTEM) != 0;
     }
 
     /** @hide */
+    @SystemApi
     public boolean isUpdatedSystemApp() {
         return (flags & ApplicationInfo.FLAG_UPDATED_SYSTEM_APP) != 0;
     }

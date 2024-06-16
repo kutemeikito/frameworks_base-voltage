@@ -8269,6 +8269,11 @@ public class PackageManagerService implements PackageSender, TestUtilityService 
         return mInstallPackageHelper.getUidForVerifier(verifierInfo);
     }
 
+    @NonNull
+    public Context getContext() {
+        return mContext;
+    }
+
     int deletePackageX(String packageName, long versionCode, int userId, int deleteFlags,
                         boolean removedBySystem) {
         return mDeletePackageHelper.deletePackageX(packageName,

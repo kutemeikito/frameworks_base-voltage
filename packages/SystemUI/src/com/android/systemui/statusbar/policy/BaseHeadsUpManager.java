@@ -77,7 +77,6 @@ public abstract class BaseHeadsUpManager implements HeadsUpManager {
     protected final HeadsUpManagerLogger mLogger;
     protected int mMinimumDisplayTime;
     protected int mStickyForSomeTimeAutoDismissTime;
-    protected int mAutoDismissTime;
     protected DelayableExecutor mExecutor;
 
     /**

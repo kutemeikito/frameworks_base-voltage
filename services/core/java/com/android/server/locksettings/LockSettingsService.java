@@ -3773,9 +3773,4 @@ public class LockSettingsService extends ILockSettings.Stub {
             onCredentialVerified(sp, loadPasswordMetrics(sp, userId), userId);
         }
     }
-
-    @Override
-    public boolean onAutoRebootEvent(int event) {
-        return android.ext.AutoReboot.handleEventInSystemServer(mContext, event);
-    }
 }

@@ -62,7 +62,7 @@ public class UsbPortSecurityHooks {
         }
     }
 
-    private boolean keyguardShownAtLeastOnce;
+    private boolean keyguardDismissedAtLeastOnce;
     private Boolean prevKeyguardShowing; // intentionally using boxed boolean to have a null value
     private long keyguardShowingChangeCount;
 
@@ -84,7 +84,7 @@ public class UsbPortSecurityHooks {
         ++keyguardShowingChangeCount;
 
         if (setting == UsbPortSecurity.MODE_CHARGING_ONLY_WHEN_LOCKED
-              || (keyguardShownAtLeastOnce && setting == UsbPortSecurity.MODE_CHARGING_ONLY_WHEN_LOCKED_AFU))
+              || (keyguardDismissedAtLeastOnce && setting == UsbPortSecurity.MODE_CHARGING_ONLY_WHEN_LOCKED_AFU))
         {
             if (showing) {
                 setSecurityStateForAllPorts(ctx, android.hardware.usb.ext.PortSecurityState.CHARGING_ONLY);
@@ -111,8 +111,8 @@ public class UsbPortSecurityHooks {
             }
         }
 
-        if (userId == UserHandle.USER_SYSTEM && showing) {
-            keyguardShownAtLeastOnce = true;
+        if (userId == UserHandle.USER_SYSTEM && !showing) {
+            keyguardDismissedAtLeastOnce = true;
         }
     }
 

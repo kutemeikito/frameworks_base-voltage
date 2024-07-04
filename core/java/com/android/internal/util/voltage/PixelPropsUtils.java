@@ -63,6 +63,8 @@ public class PixelPropsUtils {
     private static final String DEVICE = "ro.voltage.device";
     private static final boolean DEBUG = SystemProperties.getBoolean("persist.sys.pixelprops.debug", false);
 
+    private static final String sDeviceModel =
+            SystemProperties.get("ro.product.model", Build.MODEL);
     private static final Boolean sEnablePixelProps =
             Resources.getSystem().getBoolean(R.bool.config_enablePixelProps);
 
@@ -170,8 +172,8 @@ public class PixelPropsUtils {
         propsToChangeRecentPixel.put("PRODUCT", "husky");
         propsToChangeRecentPixel.put("HARDWARE", "husky");
         propsToChangeRecentPixel.put("MODEL", "Pixel 8 Pro");
-        propsToChangeRecentPixel.put("ID", "AP1A.240505.005");
-        propsToChangeRecentPixel.put("FINGERPRINT", "google/husky/husky:14/AP1A.240505.005/11677807:user/release-keys");
+        propsToChangeRecentPixel.put("ID", "AP2A.240705.005.A1");
+        propsToChangeRecentPixel.put("FINGERPRINT", "google/husky/husky:14/AP2A.240705.005.A1/11944170:user/release-keys");
         propsToChangePixelTablet = new HashMap<>();
         propsToChangePixelTablet.put("BRAND", "google");
         propsToChangePixelTablet.put("MANUFACTURER", "Google");
@@ -179,8 +181,8 @@ public class PixelPropsUtils {
         propsToChangePixelTablet.put("PRODUCT", "tangorpro");
         propsToChangePixelTablet.put("HARDWARE", "tangorpro");
         propsToChangePixelTablet.put("MODEL", "Pixel Tablet");
-        propsToChangePixelTablet.put("ID", "AP1A.240505.004");
-        propsToChangePixelTablet.put("FINGERPRINT", "google/tangorpro/tangorpro:14/AP1A.240505.004/11583682:user/release-keys");
+        propsToChangePixelTablet.put("ID", "AP2A.240705.004");
+        propsToChangePixelTablet.put("FINGERPRINT", "google/tangorpro/tangorpro:14/AP2A.240705.004/11875680:user/release-keys");
         propsToChangePixel5a = new HashMap<>();
         propsToChangePixel5a.put("BRAND", "google");
         propsToChangePixel5a.put("MANUFACTURER", "Google");
@@ -188,8 +190,8 @@ public class PixelPropsUtils {
         propsToChangePixel5a.put("PRODUCT", "barbet");
         propsToChangePixel5a.put("HARDWARE", "barbet");
         propsToChangePixel5a.put("MODEL", "Pixel 5a");
-        propsToChangePixel5a.put("ID", "AP1A.240505.004");
-        propsToChangePixel5a.put("FINGERPRINT", "google/barbet/barbet:14/AP1A.240505.004/11583682:user/release-keys");
+        propsToChangePixel5a.put("ID", "AP2A.240705.004");
+        propsToChangePixel5a.put("FINGERPRINT", "google/barbet/barbet:14/AP2A.240705.004/11875680:user/release-keys");
     }
 
     public static String getBuildID(String fingerprint) {
@@ -222,8 +224,6 @@ public class PixelPropsUtils {
         if (!processName.toLowerCase().contains("unstable")) {
             return false;
         }
-
-        setPropValue("TIME", System.currentTimeMillis());
 
         final boolean was = isGmsAddAccountActivityOnTop();
         final String reason = "GmsAddAccountActivityOnTop";
@@ -323,7 +323,6 @@ public class PixelPropsUtils {
                     return;
                 } else {
                     dlog("Spoofing GMS to pass integrity");
-                    setPropValue("TIME", System.currentTimeMillis());
                     spoofBuildGms(context);
                 }
             }
@@ -341,17 +340,17 @@ public class PixelPropsUtils {
                 return;
             } else if (Arrays.asList(packagesToChangeRecentPixel).contains(packageName)) {
                 if (packageName.toLowerCase().contains("com.google.android.gms")) {
-                    if (processName.toLowerCase().contains("update")) {
-                        return;
-                    } else if (processName.toLowerCase().contains("ui")
-                            || processName.toLowerCase().contains("gapps")
+                    setPropValue("TIME", System.currentTimeMillis());
+                    if (processName.toLowerCase().contains("ui")) {
+                        setPropValue("MODEL", sDeviceModel);
+                    } else if (processName.toLowerCase().contains("gapps")
                             || processName.toLowerCase().contains("gservice")
                             || processName.toLowerCase().contains("learning")
                             || processName.toLowerCase().contains("persistent")
-                            || processName.toLowerCase().contains("search")) {
+                            || processName.toLowerCase().contains("search")
+                            || processName.toLowerCase().contains("update")) {
                         propsToChange.putAll(propsToChangePixel5a);
                     }
-                    setPropValue("TIME", System.currentTimeMillis());
                 }
                 propsToChange.putAll(propsToChangeRecentPixel);
             } else if (sIsTablet) {

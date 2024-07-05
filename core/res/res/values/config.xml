@@ -7019,7 +7019,4 @@
     <string name="config_defaultContextualSearchLegacyEnabled" translatable="false" />
 
     <string name="config_gnssPsdsType"></string>
-
-    <bool name="config_usbPortSecuritySupported">false</bool>
-    <java-symbol type="bool" name="config_usbPortSecuritySupported" />
 </resources>

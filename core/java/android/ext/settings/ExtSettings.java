@@ -95,37 +95,21 @@ public class ExtSettings {
     public static final IntSetting BLUETOOTH_AUTO_OFF = new IntSetting(
             Setting.Scope.GLOBAL, "bluetooth_off_timeout", 0 /* off by default */);
 
-    public static final String DENY_NEW_USB_DISABLED = "disabled";
-    public static final String DENY_NEW_USB_DYNAMIC = "dynamic";
-    public static final String DENY_NEW_USB_ENABLED = "enabled";
-    // also specified in build/make/core/main.mk
-    public static final String DENY_NEW_USB_DEFAULT = DENY_NEW_USB_DYNAMIC;
-
-    // see system/core/rootdir/init.rc
-    public static final String DENY_NEW_USB_TRANSIENT_PROP = "security.deny_new_usb";
-    public static final String DENY_NEW_USB_TRANSIENT_ENABLE = "1";
-    public static final String DENY_NEW_USB_TRANSIENT_DISABLE = "0";
-
-    public static final StringSysProperty DENY_NEW_USB = new StringSysProperty(
-            "persist.security.deny_new_usb", DENY_NEW_USB_DEFAULT) {
-        @Override
-        public boolean validateValue(String val) {
-            switch (val) {
-                case DENY_NEW_USB_DISABLED:
-                case DENY_NEW_USB_DYNAMIC:
-                case DENY_NEW_USB_ENABLED:
-                    return true;
-                default:
-                    return false;
-            }
-        }
-    };
-
     public static final IntSetting WIDEVINE_PROVISIONING_SERVER = new IntSetting(
             Setting.Scope.GLOBAL, "widevine_provisioner_server",
             WV_GRAPHENEOS_PROXY, // default
             WV_STANDARD_SERVER, WV_GRAPHENEOS_PROXY // valid values
     );
+    // AppCompatConfig specifies which hardening features are compatible/incompatible with a
+    // specific app.
+    // This setting controls whether incompatible hardening features would be disabled by default
+    // for that app. In both cases, user will still be able to enable/disable them manually.
+    //
+    // Note that hardening features that are marked as compatible are enabled unconditionally by
+    // default, regardless of this setting.
+    public static final BoolSetting ALLOW_DISABLING_HARDENING_VIA_APP_COMPAT_CONFIG = new BoolSetting(
+            Setting.Scope.GLOBAL, "allow_automatic_pkg_hardening_config", // historical name
+            defaultBool(R.bool.setting_default_allow_disabling_hardening_via_app_compat_config));
 
     private ExtSettings() {}
 

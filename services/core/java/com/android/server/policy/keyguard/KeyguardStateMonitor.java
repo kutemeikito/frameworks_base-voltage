@@ -34,6 +34,8 @@ import java.io.PrintWriter;
 public class KeyguardStateMonitor extends IKeyguardStateCallback.Stub {
     private static final String TAG = "KeyguardStateMonitor";
 
+    private final Context mContext;
+
     // These cache the current state of Keyguard to improve performance and avoid deadlock. After
     // Keyguard changes its state, it always triggers a layout in window manager. Because
     // IKeyguardStateCallback is synchronous and because these states are declared volatile, it's
@@ -51,6 +53,7 @@ public class KeyguardStateMonitor extends IKeyguardStateCallback.Stub {
     private final StateCallback mCallback;
 
     public KeyguardStateMonitor(Context context, IKeyguardService service, StateCallback callback) {
+        mContext = context;
         mLockPatternUtils = new LockPatternUtils(context);
         mCurrentUserId = ActivityManager.getCurrentUser();
         mCallback = callback;

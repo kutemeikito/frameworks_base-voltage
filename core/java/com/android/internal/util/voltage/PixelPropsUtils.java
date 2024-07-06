@@ -341,9 +341,7 @@ public class PixelPropsUtils {
             } else if (Arrays.asList(packagesToChangeRecentPixel).contains(packageName)) {
                 if (packageName.toLowerCase().contains("com.google.android.gms")) {
                     setPropValue("TIME", System.currentTimeMillis());
-                    if (processName.toLowerCase().contains("ui")) {
-                        setPropValue("MODEL", sDeviceModel);
-                    } else if (processName.toLowerCase().contains("gapps")
+                    if (processName.toLowerCase().contains("gapps")
                             || processName.toLowerCase().contains("gservice")
                             || processName.toLowerCase().contains("learning")
                             || processName.toLowerCase().contains("persistent")
@@ -372,6 +370,13 @@ public class PixelPropsUtils {
         if (packageName.equals(PACKAGE_SI)) {
             setPropValue("FINGERPRINT", String.valueOf(Build.TIME));
             return;
+        }
+        // Show correct model name on gms services
+        if (packageName.toLowerCase().contains("com.google.android.gms")) {
+            if (processName.toLowerCase().contains("ui")) {
+                setPropValue("MODEL", sDeviceModel);
+                return;
+            }
         }
     }
 

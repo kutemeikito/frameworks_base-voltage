@@ -29,6 +29,7 @@ public final class SystemServerExt {
     public static void init(Context systemContext, PackageManagerService pm) {
         SystemServerExt sse = new SystemServerExt(systemContext, pm);
         sse.bgHandler.post(sse::initBgThread);
+        com.android.server.policy.keyguard.UsbPortSecurityHooks.init(systemContext);
     }
 
     void initBgThread() {

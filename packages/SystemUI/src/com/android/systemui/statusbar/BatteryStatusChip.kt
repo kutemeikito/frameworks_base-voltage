@@ -18,6 +18,8 @@ import android.annotation.IntRange
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.Configuration
+import android.os.UserHandle
+import android.provider.Settings
 import android.util.AttributeSet
 import android.view.View
 import android.widget.FrameLayout
@@ -34,6 +36,14 @@ class BatteryStatusChip @JvmOverloads constructor(context: Context, attrs: Attri
     override val contentView: View
         get() = batteryMeterView
 
+    private val BATTERY_STYLE_TEXT = 4
+    private val BATTERY_STYLE_HIDDEN = 5
+
+    private var batteryStyle = Settings.System.getIntForUser(
+             context.contentResolver, Settings.System.STATUS_BAR_BATTERY_STYLE, 0, UserHandle.USER_CURRENT)
+    private var showBatteryPercent = Settings.System.getIntForUser(
+             context.contentResolver, Settings.System.STATUS_BAR_SHOW_BATTERY_PERCENT, 0, UserHandle.USER_CURRENT)
+
     init {
         inflate(context, R.layout.battery_status_chip, this)
         roundedContainer = requireViewById(R.id.rounded_container)
@@ -41,6 +51,12 @@ class BatteryStatusChip @JvmOverloads constructor(context: Context, attrs: Attri
         batteryMeterView.setStaticColor(true)
         val primaryColor = context.resources.getColor(android.R.color.black, context.theme)
         batteryMeterView.updateColors(primaryColor, primaryColor, primaryColor)
+        if (batteryStyle == BATTERY_STYLE_HIDDEN) {
+            batteryMeterView.setBatteryStyle(BATTERY_STYLE_TEXT)
+        } else {
+            batteryMeterView.setBatteryStyle(batteryStyle)
+        }
+        batteryMeterView.setBatteryPercent(showBatteryPercent);
         updateResources()
     }
 

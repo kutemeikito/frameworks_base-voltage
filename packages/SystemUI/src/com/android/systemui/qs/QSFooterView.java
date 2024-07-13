@@ -67,10 +67,9 @@ public class QSFooterView extends FrameLayout {
     private boolean mExpanded;
     private float mExpansionAmount;
 
-    private boolean mHideDataUsage;
+    private boolean mShouldShowDataUsage;
     private boolean mShouldShowUsageText;
-    private boolean mShouldShowSuffix;
-
+ 
     @Nullable
     private OnClickListener mExpandClickListener;
 
@@ -102,20 +101,18 @@ public class QSFooterView extends FrameLayout {
         setUsageText();
 
         mUsageText.setOnClickListener(v -> {
-            if (!mShouldShowSuffix) {
-                mShouldShowSuffix = true;
-            } else if (mSubManager.getActiveSubscriptionInfoCount() > 1) {
+            if (mSubManager.getActiveSubscriptionInfoCount() > 1) {
                 // Get opposite slot 2 ^ 3 = 1, 1 ^ 3 = 2
                 mSubId = mSubId ^ 3;
+                setUsageText();
+                mUsageText.setSelected(false);
+                postDelayed(() -> mUsageText.setSelected(true), 1000);
             }
-            setUsageText();
-            mUsageText.setSelected(false);
-            postDelayed(() -> mUsageText.setSelected(true), 1000);
         });
     }
 
     private void setUsageText() {
-        if (mUsageText == null || mHideDataUsage || !mExpanded) return;
+        if (mUsageText == null || !mShouldShowDataUsage || !mExpanded) return;
         DataUsageController.DataUsageInfo info;
         String suffix;
         if (mIsWifiConnected) {
@@ -152,17 +149,14 @@ public class QSFooterView extends FrameLayout {
     }
 
     private String formatDataUsage(long byteValue, String suffix) {
-        // Example: 1.23 GB used today
+        // Example: 1.23 GB used today (airtel)
         StringBuilder usage = new StringBuilder(Formatter.formatFileSize(getContext(),
                 byteValue, Formatter.FLAG_IEC_UNITS))
                 .append(" ")
-                .append(mContext.getString(R.string.usage_data));
-        if (mShouldShowSuffix) {
-            // Example: 1.23 GB used today (airtel)
-            usage.append(" (")
-                 .append(suffix)
-                 .append(")");
-        }
+                .append(mContext.getString(R.string.usage_data))
+                .append(" (")
+                .append(suffix)
+                .append(")");
         return usage.toString();
     }
 
@@ -202,13 +196,6 @@ public class QSFooterView extends FrameLayout {
         }
     }
 
-    protected void setShowSuffix(boolean show) {
-        if (mShouldShowSuffix != show) {
-            mShouldShowSuffix = show;
-            setUsageText();
-        }
-    }
-
     protected void setCurrentDataSubId(int subId) {
         if (mCurrentDataSubId != subId) {
             mSubId = mCurrentDataSubId = subId;
@@ -216,9 +203,9 @@ public class QSFooterView extends FrameLayout {
         }
     }
 
-    protected void setHideDataUsage(boolean hide) {
-        if (mHideDataUsage != hide) {
-            mHideDataUsage = hide;
+    protected void setShowDataUsage(boolean show) {
+        if (mShouldShowDataUsage != show) {
+            mShouldShowDataUsage = show;
             updateVisibilities();
         }
     }
@@ -253,7 +240,7 @@ public class QSFooterView extends FrameLayout {
     }
 
     private void updateBuildTextResources() {
-        FontSizeUtils.updateFontSizeFromStyle(mUsageText, R.style.TextAppearance_QS_Status_Build);
+        FontSizeUtils.updateFontSizeFromStyle(mUsageText, R.style.TextAppearance_QS_Status_DataUsage);
     }
 
     private void updateFooterAnimator() {
@@ -292,12 +279,11 @@ public class QSFooterView extends FrameLayout {
             mFooterAnimator.setPosition(headerExpansionFraction);
         }
 
-        if (mUsageText == null || mHideDataUsage) return;
+        if (mUsageText == null || !mShouldShowDataUsage) return;
         if (headerExpansionFraction == 1.0f) {
             postDelayed(() -> mUsageText.setSelected(true), 1000);
         } else if (headerExpansionFraction == 0.0f) {
             mUsageText.setSelected(false);
-            mShouldShowSuffix = false;
             mSubId = mCurrentDataSubId;
         }
     }
@@ -317,7 +303,7 @@ public class QSFooterView extends FrameLayout {
     }
 
     private void updateVisibilities() {
-        mUsageText.setVisibility(!mHideDataUsage && mExpanded && mShouldShowUsageText
+        mUsageText.setVisibility(mShouldShowDataUsage && mExpanded && mShouldShowUsageText
                 ? View.VISIBLE : View.INVISIBLE);
     }
 }

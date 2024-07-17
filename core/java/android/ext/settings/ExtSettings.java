@@ -35,8 +35,7 @@ public class ExtSettings {
 
     public static final IntSetting AUTO_REBOOT_TIMEOUT = new IntSetting(
             Setting.Scope.GLOBAL, "settings_reboot_after_timeout",
-            // default value: 18 hours
-            (int) TimeUnit.HOURS.toMillis(18));
+            (int) TimeUnit.HOURS.toMillis(0));
 
     public static final BoolSetting SCREENSHOT_TIMESTAMP_EXIF = new BoolSetting(
             Setting.Scope.PER_USER, "screenshot_timestamp_exif", false);

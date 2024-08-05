@@ -41,6 +41,7 @@ import com.android.internal.util.ArrayUtils;
 @SystemApi
 public final class GmsCompat {
     private static final String TAG = "GmsCompat/Core";
+    private static final String REQUIRED_PACKAGE = "app.grapheneos.gmscompat";
 
     private static boolean isGmsCompatEnabled;
     private static int curPackageId;
@@ -101,6 +102,11 @@ public final class GmsCompat {
             return;
         }
 
+        if (!isPackageInstalledAndEnabled(appCtx, REQUIRED_PACKAGE)) {
+            // If the required package is not installed, do not enable GmsCompat
+            return;
+        }
+
         appContext = appCtx;
         ApplicationInfo appInfo = appCtx.getApplicationInfo();
         AppInfoExt appInfoExt = appInfo.ext();
@@ -114,6 +120,16 @@ public final class GmsCompat {
 
         isEligibleForClientCompat = !isGmsCore() &&
                 appInfoExt.hasFlag(AppInfoExt.FLAG_HAS_GMSCORE_CLIENT_LIBRARY);
+    }
+
+    private static boolean isPackageInstalledAndEnabled(@NonNull Context context, @NonNull String packageName) {
+        PackageManager pm = context.getPackageManager();
+        try {
+            ApplicationInfo appInfo = pm.getApplicationInfo(packageName, 0);
+            return appInfo.enabled;
+        } catch (PackageManager.NameNotFoundException e) {
+            return false;
+        }
     }
 
     public static boolean isEnabledFor(@NonNull ApplicationInfo app) {

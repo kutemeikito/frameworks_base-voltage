@@ -3811,9 +3811,9 @@ public class PackageInstallerSession extends IPackageInstallerSession.Stub {
                     throw new PackageManagerException(errorCode, msg);
                 }
 
-                case PackageId.ANDROID_AUTO_NAME:
-                    String msg = "Installation of " + mPackageName + " is blocked to prevent breaking gmscompat";
-                    throw new PackageManagerException(errorCode, msg);
+                //case PackageId.ANDROID_AUTO_NAME:
+                //    String msg = "Installation of " + mPackageName + " is blocked to prevent breaking gmscompat";
+                //    throw new PackageManagerException(errorCode, msg);
             }
         }
 
